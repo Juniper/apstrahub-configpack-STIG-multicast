@@ -2,18 +2,21 @@
 #  All rights reserved.
 #  SPDX-License-Identifier: MIT
 
-resource "apstra_configlet" "example" {
+resource "apstra_datacenter_configlet" "a" {
+  blueprint_id = var.blueprint_id
+  condition = "role in [\"leaf\", \"access\"]"
   name = var.name
   generators = [
     {
       config_style  = "junos"
       section       = "top_level_hierarchical"
       template_text = <<-EOT
-        ether-options {
-          802.3ad {
-            lacp {
-              force-up;
-            }
+        protocols {
+          replace: igmp-snooping {
+            vlan all;
+          }
+          replace: mld-snooping {
+            vlan all;
           }
         }
       EOT

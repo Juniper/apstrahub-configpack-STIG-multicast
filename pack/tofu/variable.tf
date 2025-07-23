@@ -2,7 +2,11 @@
 #  All rights reserved.
 #  SPDX-License-Identifier: MIT
 
-variable "name" {
+variable "blueprint_id" {
   type = string
-  default = "LACP force up"
+}
+
+variable "name" {
+  type    = string
+  default = "STIG Multicast"
 }
