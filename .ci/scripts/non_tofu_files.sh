@@ -11,10 +11,20 @@ if [ $# -ne 1 ]; then
   exit 2
 fi
 
-FILES=$(find "$1" -type f \! -name '*.tf')
+# make sure we only have `*.tf` files (ignoring the tests/ directory)
+FILES=$(find "$1" -path "$1/tests" -prune -o -type f \! -name '*.tf' -print)
 
 if [ "$FILES" != "" ]; then
   echo "non .tf files found in $1:"
+  echo "$FILES"
+  exit 3
+fi
+
+# make sure the tests/ directory only has `*.tf` and `*tftest.hcl` files
+FILES=$(find "$1/tests" -type f \! -name '*.tf' \! -name '*.tftest.hcl' -print)
+
+if [ "$FILES" != "" ]; then
+  echo "non test files found in $1/tests:"
   echo "$FILES"
   exit 3
 fi
